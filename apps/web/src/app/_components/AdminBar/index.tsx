@@ -5,9 +5,6 @@ import { useSelectedLayoutSegments } from 'next/navigation'
 import { PayloadAdminBar, PayloadAdminBarProps } from 'payload-admin-bar'
 
 import { useAuth } from '../../_providers/Auth'
-import { Gutter } from '../Gutter'
-
-import classes from './index.module.scss'
 
 const Title: React.FC = () => <span>Dashboard</span>
 
@@ -29,11 +26,10 @@ export const AdminBar: React.FC<{
 
   const isAdmin = user?.roles?.includes('admin')
 
-  if (!isAdmin) return null
-
+  if (!isAdmin || !show) return null
   return (
-    <div className={[classes.adminBar, show && classes.show].filter(Boolean).join(' ')}>
-      <Gutter className={classes.blockContainer}>
+    <div>
+      <div>
         <PayloadAdminBar
           {...adminBarProps}
           collection={collection}
@@ -43,21 +39,19 @@ export const AdminBar: React.FC<{
           }}
           key={user?.id} // use key to get the admin bar to re-run its `me` request
           cmsURL={process.env.NEXT_PUBLIC_SERVER_URL}
-          className={classes.payloadAdminBar}
           classNames={{
-            user: classes.user,
-            logo: classes.logo,
-            controls: classes.controls,
+            user: 'pr-2.5',
+            logo: 'pr-2.5',
+            controls: 'pr-2.5',
           }}
           logo={<Title />}
           style={{
             position: 'relative',
             zIndex: 'unset',
-            padding: 0,
-            backgroundColor: 'transparent',
+            padding: 5,
           }}
         />
-      </Gutter>
+      </div>
     </div>
   )
 }
