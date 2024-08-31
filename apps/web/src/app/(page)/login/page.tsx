@@ -4,10 +4,11 @@ import { Metadata } from 'next'
 // import { RenderParams } from '../../_components/RenderParams'
 import { getMeUser } from '../../_utilities/getMeUser'
 import { mergeOpenGraph } from '../../_utilities/mergeOpenGraph'
-import LoginForm from './LoginForm'
+import { UserLoginForm } from './LoginForm'
 import Link from 'next/link'
 import { cn } from '@/app/_lib/utils'
 import { buttonVariants } from '@/app/_components/ui/button'
+import LoginForm from './LoginForm/index'
 
 export default async function Login() {
   await getMeUser({
@@ -17,9 +18,9 @@ export default async function Login() {
   return (
     <div>
       {/* <RenderParams /> */}
-      <h1>Log in</h1>
-      <LoginForm />
-      <div className="container relative hidden h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+      {/* <h1>Log in</h1>
+      <LoginForm /> */}
+      <div className="container relative hidden h-[100vh] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <Link
           href="/examples/authentication"
           className={cn(
@@ -27,7 +28,7 @@ export default async function Login() {
             "absolute right-4 top-4 md:right-8 md:top-8"
           )}
         >
-          Login
+          Register
         </Link>
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
           <div className="absolute inset-0 bg-zinc-900" />
@@ -48,10 +49,10 @@ export default async function Login() {
           </div>
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
-              <p className="text-lg">
-                &ldquo;This library has saved me countless hours of work and
-                helped me deliver stunning designs to my clients faster than
-                ever before.&rdquo;
+              <p>
+                {`This is where your customers will login to manage their account, review their order history, and more. To manage all users, `}
+                <Link href={`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/collections/users`} className={buttonVariants({ variant: "link", className: 'text-white text-base px-0' })}>login to the admin dashboard</Link>
+                {'.'}
               </p>
               <footer className="text-sm">Sofia Davis</footer>
             </blockquote>
@@ -61,13 +62,13 @@ export default async function Login() {
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
               <h1 className="text-2xl font-semibold tracking-tight">
-                Create an account
+                Login your account
               </h1>
               <p className="text-sm text-muted-foreground">
-                Enter your email below to create your account
+                Enter your email below to login your account
               </p>
             </div>
-            <LoginForm />
+            <UserLoginForm />
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <Link

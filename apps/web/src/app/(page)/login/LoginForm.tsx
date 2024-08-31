@@ -2,42 +2,83 @@
 
 import * as React from "react"
 
-import { cn } from "@/app/_lib/utils" 
-import { Icons } from "@/app/_components/ui/icons" 
-import { Button } from "@/app/_components/ui/button" 
-import { Input } from "@/app/_components/ui/input"
-import { Label } from "@/app/_components/ui/label" 
+import { cn } from "@/app/_lib/utils"
+import { Icons } from "@/app/_components/ui/icons"
+import { Button } from "@/app/_components/ui/button"
+import { Label } from "@/app/_components/ui/label"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useAuth } from "@/app/_providers/Auth"
+import { useForm } from 'react-hook-form'
+import { Input } from "@/app/_components/Input"
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
+type FormData = {
+  email: string
+  password: string
+}
+export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
+  const searchParams = useSearchParams()
+  const allParams = searchParams.toString() ? `?${searchParams.toString()}` : ''
+  const redirect = React.useRef(searchParams.get('redirect'))
+  const { login } = useAuth()
+  const router = useRouter()
+  const [error, setError] = React.useState<string | null>(null)
 
-export function LoginForm({ className, ...props }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isLoading },
+  } = useForm<FormData>()
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault()
-    setIsLoading(true)
-
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
-  }
+  const onSubmit = React.useCallback(
+    async (data: FormData) => {
+      try {
+        await login(data)
+        if (redirect?.current) router.push(redirect.current as string)
+        else router.push('/')
+      } catch (_) {
+        setError('There was an error with the credentials provided. Please try again.')
+      }
+    },
+    [login, router],
+  )
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)} >
         <div className="grid gap-2">
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
               Email
             </Label>
             <Input
+              name="email"
               id="email"
-              placeholder="name@example.com"
+              placeholder="Email Address"
               type="email"
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
+              register={register}
+              error={errors.email}
               disabled={isLoading}
+            />
+          </div>
+          <div className="grid gap-1">
+            <Label className="sr-only" htmlFor="email">
+              password
+            </Label>
+            <Input
+              id="email"
+              placeholder="Password"
+              name="password"
+              type="password"
+              autoCapitalize="none"
+              autoComplete="email"
+              autoCorrect="off"
+              disabled={isLoading}
+              register={register}
+              error={errors.password}
             />
           </div>
           <Button disabled={isLoading}>

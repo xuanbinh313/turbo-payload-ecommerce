@@ -11,6 +11,7 @@ import { Input } from '../../../_components/Input'
 import { useAuth } from '../../../_providers/Auth'
 
 import classes from './index.module.css'
+import { buttonVariants } from '@/app/_components/ui/button'
 
 type FormData = {
   email: string
@@ -48,7 +49,7 @@ const LoginForm: React.FC = () => {
     <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
       <p>
         {`This is where your customers will login to manage their account, review their order history, and more. To manage all users, `}
-        <Link href="/admin/collections/users">login to the admin dashboard</Link>
+        <Link href="/admin/collections/users" className={buttonVariants({ variant: "outline" })}>login to the admin dashboard</Link>
         {'.'}
       </p>
       {/* <Message error={error} className={classes.message} /> */}

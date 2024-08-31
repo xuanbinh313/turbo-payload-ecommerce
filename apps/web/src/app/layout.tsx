@@ -22,12 +22,7 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <Providers>
-          <div className="hidden flex-col md:flex">
-            <AdminBar />
-            <Header />
             {children}
-            {/* <Footer /> */}
-          </div>
         </Providers>
       </body>
     </html>

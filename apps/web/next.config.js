@@ -2,6 +2,11 @@
 module.exports = {
   reactStrictMode: true,
   transpilePackages: ["@repo/ui"],
+  async rewrites() {
+    return [
+      { source: "/", destination: "/home"},
+    ];
+  },
   images: {
     remotePatterns: [
       {

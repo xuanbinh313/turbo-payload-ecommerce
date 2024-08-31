@@ -50,7 +50,6 @@ export default async function Page({ params: { slug = 'home' } }) {
   }
 
   const { hero, layout } = page
-console.log('hero', hero)
   return (
     <React.Fragment>
       <Hero {...hero} />
